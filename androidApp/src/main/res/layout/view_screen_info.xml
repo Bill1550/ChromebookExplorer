@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/labelGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".45"
+        />
+
+    <TextView
+        android:id="@+id/orientationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/labelGuide"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/heightLabel"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.05"
+        android:text="@string/label_orientation"
+        style="@style/labelText"
+        />
+
+    <TextView
+        android:id="@+id/heightLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/labelGuide"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintTop_toBottomOf="@id/orientationLabel"
+        app:layout_constraintBottom_toTopOf="@id/widthLabel"
+        android:text="@string/label_height"
+        style="@style/labelText"
+        />
+
+    <TextView
+        android:id="@+id/widthLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/labelGuide"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintTop_toBottomOf="@id/heightLabel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/label_width"
+        style="@style/labelText"
+        />
+
+    <TextView
+        android:id="@+id/orientationValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/labelGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginStart="@dimen/valueLabelSpacing"
+        app:layout_constraintBaseline_toBaselineOf="@id/orientationLabel"
+        tools:text="@string/label_orientation"
+        style="@style/valueText"
+        />
+
+    <TextView
+        android:id="@+id/heightValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/labelGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginStart="@dimen/valueLabelSpacing"
+        app:layout_constraintBaseline_toBaselineOf="@id/heightLabel"
+        tools:text="@string/label_height"
+        style="@style/valueText"
+        />
+
+    <TextView
+        android:id="@+id/widthValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/labelGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginStart="@dimen/valueLabelSpacing"
+        app:layout_constraintBaseline_toBaselineOf="@id/widthLabel"
+        tools:text="@string/label_width"
+        style="@style/valueText"
+        />
+
+
+</merge>

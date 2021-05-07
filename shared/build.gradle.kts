@@ -19,7 +19,12 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                api( Dependencies.coroutines )
+            }
+        }
+
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -29,6 +34,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("com.google.android.material:material:1.3.0")
+                api( "com.jakewharton.timber:timber:${Versions.timber}")
             }
         }
         val androidTest by getting {
@@ -43,11 +49,11 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdkVersion(Versions.Android.compile_sdk)
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(24)
-        targetSdkVersion(29)
+        minSdkVersion(Versions.Android.min_sdk)
+        targetSdkVersion(Versions.Android.target_sdk)
     }
 }
 

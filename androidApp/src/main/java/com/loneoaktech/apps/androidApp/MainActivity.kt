@@ -1,10 +1,9 @@
 package com.loneoaktech.apps.androidApp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.loneoaktech.apps.shared.Greeting
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.loneoaktech.apps.androidApp.databinding.ActivityMainBinding
+import com.loneoaktech.apps.shared.Greeting
 
 fun greet(): String {
     return Greeting().greeting()
@@ -18,6 +17,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
 
-        viewBinding.textView.text = greet()
+        title = "Chromebook Explorer"
+
+        viewBinding.platformView.text = greet()
+
+        savedInstanceState ?: let {
+            supportFragmentManager.beginTransaction().apply {
+                replace( R.id.fragmentContainer, ScreenInfoFragment() )
+            }.commit()
+        }
+
     }
 }
