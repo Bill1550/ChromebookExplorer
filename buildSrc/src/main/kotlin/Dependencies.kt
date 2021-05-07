@@ -1,6 +1,6 @@
 object Dependencies {
 
-    const val coroutines =
+    const val android_coroutines =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Kotlin.coroutines}"
 
     const val coroutines_test =

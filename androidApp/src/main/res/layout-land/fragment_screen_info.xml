@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="24dp"
         tools:text="00:00"
