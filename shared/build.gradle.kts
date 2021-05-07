@@ -19,11 +19,7 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api( Dependencies.coroutines )
-            }
-        }
+        val commonMain by getting
 
         val commonTest by getting {
             dependencies {
