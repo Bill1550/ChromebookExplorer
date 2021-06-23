@@ -2,43 +2,43 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="0dp"
-    >
+    android:layout_height="match_parent">
 
-    <com.loneoaktech.apps.androidApp.ui.ScreenInfoView
-        android:id="@+id/infoLayout"
-        android:layout="@layout/view_screen_info"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="24dp"
-        />
-
-    <ImageView
-        android:id="@+id/startEdgeIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_panorama_vertical_48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/description_start_icon"
-        />
-
-    <TextView
-        android:id="@+id/timeView"
+    <Button
+        android:id="@+id/showPopupButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/showDialogButton"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:text="@string/label_show_popup"
+        />
+
+    <Button
+        android:id="@+id/showDialogButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showPopupButton"
+        app:layout_constraintBottom_toTopOf="@id/showDialogFragmentButton"
+        android:layout_marginTop="40dp"
+        android:text="@string/label_show_dialog"
+        />
+
+    <Button
+        android:id="@+id/showDialogFragmentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDialogButton"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="24dp"
-        tools:text="00:00:00"
+        android:layout_marginTop="40dp"
+        android:text="@string/label_show_dialo_fragment"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

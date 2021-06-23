@@ -55,6 +55,11 @@ android {
         minSdkVersion(Versions.Android.min_sdk)
         targetSdkVersion(Versions.Android.target_sdk)
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
 val packForXcode by tasks.creating(Sync::class) {

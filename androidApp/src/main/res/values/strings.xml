@@ -5,4 +5,11 @@
     <string name="label_width">Width:</string>
     <string name="description_top_icon">Top edge icon</string>
     <string name="description_start_icon">Start edge icon</string>
+    <string name="label_show_popup">Show Popup</string>
+    <string name="label_show_dialog">Show Dialog</string>
+    <string name="title_popup_window">A Popup Window</string>
+    <string name="label_dismiss">Dismiss</string>
+    <string name="title_dialog_fragment">Dialog Fragment</string>
+    <string name="label_other">Other</string>
+    <string name="label_show_dialo_fragment">Show Dlg Fragment</string>
 </resources>

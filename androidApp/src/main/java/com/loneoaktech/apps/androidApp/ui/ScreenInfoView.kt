@@ -1,4 +1,4 @@
-package com.loneoaktech.apps.androidApp
+package com.loneoaktech.apps.androidApp.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
