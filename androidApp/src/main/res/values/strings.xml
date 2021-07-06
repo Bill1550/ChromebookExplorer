@@ -12,4 +12,7 @@
     <string name="title_dialog_fragment">Dialog Fragment</string>
     <string name="label_other">Other</string>
     <string name="label_show_dialo_fragment">Show Dlg Fragment</string>
+    <string name="label_show_manual_popup">Show Manual Popup</string>
+    <string name="label_hi">Hi</string>
+    <string name="title_manual_popup">Manual Popup</string>
 </resources>

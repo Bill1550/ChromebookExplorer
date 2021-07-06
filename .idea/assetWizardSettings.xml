@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/c:/Development/Android/sdk/icons/material/materialicons/panorama_vertical/baseline_panorama_vertical_24.xml" />
+                                      <entry key="url" value="file:/c:/Development/Android/sdk/icons/material/materialicons/star/baseline_star_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="0060f0" />
-                            <entry key="outputName" value="ic_baseline_panorama_vertical_48" />
+                            <entry key="color" value="f000ac" />
+                            <entry key="outputName" value="ic_baseline_star_24" />
                             <entry key="sourceFile" value="D:\repos\ChromebookExplorer" />
                           </map>
                         </option>

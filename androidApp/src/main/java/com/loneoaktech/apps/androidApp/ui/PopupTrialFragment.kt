@@ -8,12 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
+import androidx.core.view.doOnPreDraw
+import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import com.loneoaktech.apps.androidApp.R
 import com.loneoaktech.apps.androidApp.databinding.FragmentPopupExplorerBinding
 import com.loneoaktech.apps.androidApp.utilities.lazyViewBinding
 import com.loneoaktech.apps.androidApp.utilities.withViews
 import com.loneoaktech.apps.platform.utilities.goFullScreen
+import timber.log.Timber
 
 class PopupTrialFragment : Fragment() {
 
@@ -30,6 +33,7 @@ class PopupTrialFragment : Fragment() {
             showDialogButton.setOnClickListener { v -> showDialog(v) }
             showPopupButton.setOnClickListener { v -> showPopup(v)  }
             showDialogFragmentButton.setOnClickListener { v -> showDialogFragment(v) }
+            showManualPopup.setOnClickListener { v -> showManualPopup() }
         }
 
     }
@@ -77,4 +81,34 @@ class PopupTrialFragment : Fragment() {
     private fun showDialogFragment( anchor: View ) {
          PopupDialogFragment().show(childFragmentManager, "popup")
     }
+
+
+    private fun showManualPopup() {
+        Timber.i("Show manual popup")
+        (view as? ViewGroup)?.let { root ->
+            val popup = layoutInflater.inflate(R.layout.layout_trial_popup, root, false)
+
+            root.addView(popup)
+
+            popup.findViewById<Button>(R.id.dismissButton)?.run {
+                setOnClickListener {
+                    Timber.i("click!")
+                    val found = root.findViewById<View>(R.id.manualPopup)
+                    Timber.i("popup view=$popup, found by id=$found")
+                    root.removeView(popup)
+                }
+
+                popup.postDelayed(250) {
+                    Timber.i("Is button visible: $isVisible")
+                    Timber.i("Request focus=${requestFocus()}")
+                }
+//                popup.doOnPreDraw {
+//                    requestFocus()
+//                }
+
+            } ?: Timber.e("Button not found")
+        }
+
+    }
+
 }
