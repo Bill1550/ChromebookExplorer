@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
@@ -88,7 +89,18 @@ class PopupTrialFragment : Fragment() {
         (view as? ViewGroup)?.let { root ->
             val popup = layoutInflater.inflate(R.layout.layout_trial_popup, root, false)
 
-            root.addView(popup)
+            Timber.i("Root view: ${root.javaClass.simpleName}, kids=${root.childCount}")
+            Timber.i("popup size=${popup.width},${popup.height}")
+            val lp = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT).apply {
+//                setMargins( 100, 50, 0 ,0)
+                leftMargin = 200
+                topMargin = 200
+            }
+            root.addView(popup, -1, lp )
+
+            popup.elevation = 20f  // Kludge?
+//            popup.left = 200
+//            popup.top = 200
 
             popup.findViewById<Button>(R.id.dismissButton)?.run {
                 setOnClickListener {
@@ -98,13 +110,14 @@ class PopupTrialFragment : Fragment() {
                     root.removeView(popup)
                 }
 
-                popup.postDelayed(250) {
+//                popup.postDelayed(250) {
+                popup.doOnPreDraw {
+                    popup.left = 200
+                    popup.top = 200
+
                     Timber.i("Is button visible: $isVisible")
                     Timber.i("Request focus=${requestFocus()}")
                 }
-//                popup.doOnPreDraw {
-//                    requestFocus()
-//                }
 
             } ?: Timber.e("Button not found")
         }

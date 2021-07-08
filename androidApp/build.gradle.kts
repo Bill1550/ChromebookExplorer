@@ -25,7 +25,7 @@ dependencies {
 android {
     compileSdkVersion(Versions.Android.compile_sdk)
     defaultConfig {
-        applicationId = "com.loneoaktech.apps.androidApp"
+        applicationId = "com.loneoaktech.apps.chromebookexplorer"
         minSdkVersion(Versions.Android.min_sdk)
         targetSdkVersion(Versions.Android.target_sdk)
         versionCode = 1
