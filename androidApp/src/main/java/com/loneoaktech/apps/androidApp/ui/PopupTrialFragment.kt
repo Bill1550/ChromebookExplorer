@@ -38,8 +38,14 @@ class PopupTrialFragment : Fragment() {
 
     }
 
-    override fun onStart() {
-        super.onStart()
+//    override fun onStart() {
+//        super.onStart()
+//        goFullScreen()
+//    }
+
+    override fun onResume() {
+        super.onResume()
+        Timber.i("onResume")
         goFullScreen()
     }
 

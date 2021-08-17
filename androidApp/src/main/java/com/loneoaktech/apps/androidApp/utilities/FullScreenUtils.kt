@@ -21,6 +21,8 @@ fun AlertDialog.goFullScreen() {
 
 }
 
+
+
 fun goFullScreen(window: Window?, rootView: View?) {
 
 //       window?.decorView?.systemUiVisibility =
