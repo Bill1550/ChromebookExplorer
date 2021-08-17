@@ -5,13 +5,18 @@
             android:allowBackup="false"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:screenOrientation="sensor"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="tablet"/>
-            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape" />
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize"
+                android:value="tablet"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation"
+                android:value="landscape" />
         </activity>
     </application>
 </manifest>

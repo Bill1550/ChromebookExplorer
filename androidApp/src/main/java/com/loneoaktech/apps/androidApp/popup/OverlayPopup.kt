@@ -1,25 +1,86 @@
 package com.loneoaktech.apps.androidApp.popup
 
 import android.graphics.Point
+import android.util.Size
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
-import androidx.annotation.LayoutRes
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import timber.log.Timber
+import java.lang.ref.WeakReference
+
+typealias OverlayPopupHandler = (OverlayPopup, View?)->Unit
 
 class OverlayPopup(
-    private val activity: ComponentActivity,
-    @LayoutRes private val layoutId: Int,
-    private val anchorView: View?,
-    private val dismissOnOutsideClick: Boolean = false,
-    private val doOnShow: ((OverlayPopup,View)->Unit)? = null,
-    private val binder: ((OverlayPopup, View)->Unit)?
+
+    /**
+     * View to display
+     */
+    private val popupView: View,
+
+    /**
+     * Width in . null ==> LayoutParams.WRAP_CONTENT
+     */
+    private val width: Int,
+
+    /**
+     * Height in pixels, null ==> LayoutParams.WRAP_CONTENT
+     */
+    private val height: Int
+    // always focusable
+
 ) {
+
+    var dismissOnOutsideTouch: Boolean = true
+
+    private val activityRef = WeakReference(
+        (popupView.context as? ComponentActivity) ?:
+            throw IllegalArgumentException("View context must be from an activity")
+    )
+
+    private val activity: ComponentActivity
+        get() = activityRef.get() ?: throw IllegalStateException("Popup is detached from activity")
+
+    private var onDismissHandler: OverlayPopupHandler? = null
+
+    fun showAtLocation(
+        anchorView: View,
+        gravity: Int,
+        offset: Size,
+        onShowHandler: OverlayPopupHandler? = null,
+        onDismissHandler: OverlayPopupHandler? = null
+    ) {
+        Timber.i("Show at offset: $offset")
+
+        removeOverlay() // make sure we aren't nesting
+        this.onDismissHandler = onDismissHandler
+
+        overlayView = FrameLayout(activity).apply {
+            addView(popupView, createLayoutParams( computePopupLoc(anchorView, gravity, offset)) )
+
+            setOnClickListener {
+                if (dismissOnOutsideTouch)
+                    dismiss()
+            }
+
+            popupView.doOnPreDraw { onShowHandler?.invoke(this@OverlayPopup, popupView) }
+
+            getActivityRoot()?.addView(this) // TODO add layout params
+        }
+
+    }
+
+    fun dismiss() {
+        if ( removeOverlay() ) {
+            onDismissHandler?.invoke(this, null)
+            onDismissHandler = null
+        }
+    }
+
     private var overlayView: View? = null
 
     private val lifecycleObserver = LifecycleEventObserver { _, event ->
@@ -29,74 +90,40 @@ class OverlayPopup(
         }
     }
 
-    fun show() {
-        Timber.i("show, layoutId=$layoutId")
-        removeOverlay() // make sure not currently showing
-
-        activity.lifecycle.addObserver(lifecycleObserver)
-
-
-        val rootLoc = IntArray(2).apply {
-            getActivityRoot()?.getLocationOnScreen(this)
-        }
-
-        val anchorLoc = IntArray(2).apply {
-            anchorView?.getLocationOnScreen(this)
-        }
-
-        val upperLeft = anchorView?.let { av ->
-            Point(
-                anchorLoc[0]-rootLoc[0] + av.width/2,
-                anchorLoc[1]-rootLoc[1] + av.height/2
-            )
-        } ?: Point(0,0)
-
-
-        overlayView = FrameLayout(activity).apply {
-            addView(
-                createContents(this),
-                FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-//                    startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-//                    topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-                    leftMargin = upperLeft.x
-                    topMargin = upperLeft.y
-                    gravity = Gravity.TOP or Gravity.START
-                }
-            )
-
-            setOnClickListener {
-                Timber.i("overlay outside click")
-                if (dismissOnOutsideClick)
-                    dismiss()
-            }
-
-
-            getActivityRoot()?.addView(this)
-            Timber.i("requesting focus to overlay=${requestFocus()}")
-            doOnShow?.invoke( this@OverlayPopup, this)
-        }
-    }
-
-    fun dismiss() {
-        getActivityRoot()?.removeView(overlayView)
-        overlayView = null
-    }
-
-    private fun createContents( container: ViewGroup): View {
-        Timber.i("creating contents")
-        val contents = LayoutInflater.from(activity).inflate(layoutId, container, false)
-        binder?.invoke( this, contents)
-        return contents
-    }
-
-    private fun removeOverlay() {
-        overlayView?.let {
+    private fun removeOverlay(): Boolean {
+        return overlayView?.let {
             getActivityRoot()?.removeView(overlayView)
             activity.lifecycle.removeObserver(lifecycleObserver)
-        }
-        overlayView = null
+            overlayView = null
+            true
+        } ?: false
+
     }
 
     private fun getActivityRoot(): ViewGroup? = activity.findViewById(android.R.id.content) as? ViewGroup
 
+    private fun computePopupLoc( anchor: View, gravity: Int, offset: Size): Point {
+        val rootLoc = getActivityRoot()?.screenLocation ?: return Point(0,0)
+        val anchorLoc = anchor.screenLocation
+
+        return Point(
+            anchorLoc.x - rootLoc.x + offset.width,
+            anchorLoc.y - rootLoc.y + offset.height
+        )
+    }
+
+    private fun createLayoutParams( loc: Point ): FrameLayout.LayoutParams {
+        return FrameLayout.LayoutParams(height, width).apply {
+            leftMargin = loc.x
+            topMargin = loc.y
+            gravity = Gravity.TOP or Gravity.START
+        }
+    }
+
+    private val View.screenLocation: Point
+        get() {
+            val a = IntArray(2)
+            getLocationOnScreen(a)
+            return Point(a[0], a[1])
+        }
 }

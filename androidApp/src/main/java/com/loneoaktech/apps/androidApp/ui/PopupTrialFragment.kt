@@ -1,18 +1,18 @@
 package com.loneoaktech.apps.androidApp.ui
 
-import android.app.ActionBar
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Size
 import android.view.*
 import android.widget.Button
 import android.widget.PopupWindow
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.getSystemService
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import com.loneoaktech.apps.androidApp.R
 import com.loneoaktech.apps.androidApp.databinding.FragmentPopupExplorerBinding
 import com.loneoaktech.apps.androidApp.popup.OverlayPopup
+import com.loneoaktech.apps.androidApp.popup.OverlayPopupV0
 import com.loneoaktech.apps.androidApp.utilities.lazyViewBinding
 import com.loneoaktech.apps.androidApp.utilities.withViews
 import com.loneoaktech.apps.platform.utilities.goFullScreen
@@ -198,9 +198,9 @@ class PopupTrialFragment : Fragment() {
 //        return view?.findViewById(android.R.id.content) as? ViewGroup
     }
 
-    private fun showOverlayPopup() {
+    private fun showOverlayPopupV0() {
 
-        val overlayPopup = OverlayPopup(
+        val overlayPopup = OverlayPopupV0(
             activity = requireActivity(),
             layoutId = R.layout.layout_popup_test,
             anchorView = view?.findViewById<View>(R.id.popupAnchor),
@@ -218,6 +218,36 @@ class PopupTrialFragment : Fragment() {
         }
 
         overlayPopup.show()
+
+    }
+
+    private var overlayPopup: OverlayPopup? = null
+
+    private fun showOverlayPopup() {
+
+        overlayPopup?.apply { dismiss() }
+
+        val popupView = LayoutInflater.from(requireContext()).inflate(R.layout.layout_popup_test, null).apply {
+            findViewById<Button>(R.id.dismissButton)?.setOnClickListener {
+                Timber.i("calling dismiss on overlay")
+                overlayPopup?.dismiss()
+            }
+        }
+
+        val gravity = Gravity.START or Gravity.TOP
+
+        overlayPopup = OverlayPopup( popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+            view?.findViewById<View>(R.id.popupAnchor)?.let { anchor ->
+
+                showAtLocation( anchor, gravity, Size(0,0),
+                    { op, v ->
+                        v?.findViewById<Button>(R.id.dismissButton)?.requestFocus()
+                    }) { op, v ->
+                    Timber.i("-- Dismissed! --")
+                }
+            } ?: Timber.e("Anchor view not found")
+
+        }
 
     }
 }
