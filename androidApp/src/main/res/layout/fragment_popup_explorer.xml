@@ -28,6 +28,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDialogButton"
         app:layout_constraintVertical_chainStyle="packed"
         android:text="@string/label_show_popup"
+        android:textSize="16sp"
         />
 
     <Button
@@ -40,6 +41,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDialogFragmentButton"
         android:layout_marginTop="40dp"
         android:text="@string/label_show_dialog"
+        android:textSize="16sp"
         />
 
     <Button
@@ -52,6 +54,7 @@
         app:layout_constraintBottom_toTopOf="@id/showManualPopup"
         android:layout_marginTop="40dp"
         android:text="@string/label_show_dialo_fragment"
+        android:textSize="16sp"
         />
 
     <Button
@@ -64,6 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="40dp"
         android:text="@string/label_show_manual_popup"
+        android:textSize="16sp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

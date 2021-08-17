@@ -29,7 +29,7 @@ class PopupDialogFragment : DialogFragment() {
             dismissButton.setOnClickListener { dismiss() }
         }
 
-        dialog?.window?.goFullScreen()
+//        dialog?.window?.goFullScreen()
 //        activity?.window?.goFullScreen() -- didn't work
     }
 

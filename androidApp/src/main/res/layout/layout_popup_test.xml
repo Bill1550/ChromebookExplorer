@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/dismissButton"
-        android:text="@string/title_popup_window"
+        android:text="@string/title_overlay_window"
         android:textSize="20sp"
         />
 
@@ -30,5 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="24dp"
         android:text="@string/label_dismiss"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
