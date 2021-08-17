@@ -10,7 +10,6 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import timber.log.Timber
 
 class OverlayPopup(
@@ -23,7 +22,7 @@ class OverlayPopup(
 ) {
     private var overlayView: View? = null
 
-    private val lifecycleObserver = LifecycleEventObserver { source, event ->
+    private val lifecycleObserver = LifecycleEventObserver { _, event ->
         if ( event == Lifecycle.Event.ON_DESTROY) {
             Timber.i("dismissing on parent onDestroy")
             dismiss()
