@@ -11,7 +11,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import com.loneoaktech.apps.androidApp.R
 import com.loneoaktech.apps.androidApp.databinding.FragmentPopupExplorerBinding
-import com.loneoaktech.apps.androidApp.popup.OverlayPopup
+import com.loneoaktech.apps.androidApp.popup.FocusablePopup
 import com.loneoaktech.apps.androidApp.popup.OverlayPopupV0
 import com.loneoaktech.apps.androidApp.utilities.lazyViewBinding
 import com.loneoaktech.apps.androidApp.utilities.withViews
@@ -221,7 +221,7 @@ class PopupTrialFragment : Fragment() {
 
     }
 
-    private var overlayPopup: OverlayPopup? = null
+    private var overlayPopup: FocusablePopup? = null
 
     private fun showOverlayPopup() {
 
@@ -236,10 +236,10 @@ class PopupTrialFragment : Fragment() {
 
         val gravity = Gravity.START or Gravity.TOP
 
-        overlayPopup = OverlayPopup( popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+        overlayPopup = FocusablePopup( popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             view?.findViewById<View>(R.id.popupAnchor)?.let { anchor ->
 
-                showAtLocation( anchor, gravity, Size(0,0),
+                showAtLocation( gravity, Size(anchor.x.toInt(),anchor.y.toInt()),
                     { op, v ->
                         v?.findViewById<Button>(R.id.dismissButton)?.requestFocus()
                     }) { op, v ->

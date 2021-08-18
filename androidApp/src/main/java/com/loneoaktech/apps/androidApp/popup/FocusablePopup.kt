@@ -13,9 +13,17 @@ import androidx.lifecycle.LifecycleEventObserver
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
-typealias OverlayPopupHandler = (OverlayPopup, View?)->Unit
+typealias OverlayPopupHandler = (FocusablePopup, View?)->Unit
 
-class OverlayPopup(
+
+/**
+ * Displays a popup view that is focusable, without causing ghe main window to exit full
+ * screen, like the standard PopupWindow does.
+ *
+ * Creates an invisible view that covers the current activity to capture all external clicks
+ * and then renders the supplied popup view on top of that window.
+ */
+class FocusablePopup(
 
     /**
      * View to display
@@ -35,6 +43,9 @@ class OverlayPopup(
 
 ) {
 
+    /**
+     * S
+     */
     var dismissOnOutsideTouch: Boolean = true
 
     private val activityRef = WeakReference(
@@ -47,8 +58,12 @@ class OverlayPopup(
 
     private var onDismissHandler: OverlayPopupHandler? = null
 
+    /**
+     * Displays the popup relative to the parent window.
+     * Gravity specifies which side is the anchor.
+     * Offset is from the anchor side.
+     */
     fun showAtLocation(
-        anchorView: View,
         gravity: Int,
         offset: Size,
         onShowHandler: OverlayPopupHandler? = null,
@@ -60,18 +75,28 @@ class OverlayPopup(
         this.onDismissHandler = onDismissHandler
 
         overlayView = FrameLayout(activity).apply {
-            addView(popupView, createLayoutParams( computePopupLoc(anchorView, gravity, offset)) )
+            addView(
+                popupView,
+                createLayoutParams( computeAtLocationGravity(gravity)).apply {
+                    x = offset.width.toFloat()
+                    y = offset.height.toFloat()
+                }
+            )
 
             setOnClickListener {
                 if (dismissOnOutsideTouch)
                     dismiss()
             }
 
-            popupView.doOnPreDraw { onShowHandler?.invoke(this@OverlayPopup, popupView) }
+            popupView.doOnPreDraw { onShowHandler?.invoke(this@FocusablePopup, popupView) }
 
             getActivityRoot()?.addView(this) // TODO add layout params
         }
+    }
 
+
+    fun showRelative( home: View, anchorGravity: Int, popupGravity: Int, offset: Size ) {
+        // TODO
     }
 
     fun dismiss() {
@@ -80,6 +105,7 @@ class OverlayPopup(
             onDismissHandler = null
         }
     }
+
 
     private var overlayView: View? = null
 
@@ -102,7 +128,7 @@ class OverlayPopup(
 
     private fun getActivityRoot(): ViewGroup? = activity.findViewById(android.R.id.content) as? ViewGroup
 
-    private fun computePopupLoc( anchor: View, gravity: Int, offset: Size): Point {
+    private fun computePopupLoc( anchor: View, offset: Size): Point {
         val rootLoc = getActivityRoot()?.screenLocation ?: return Point(0,0)
         val anchorLoc = anchor.screenLocation
 
@@ -112,11 +138,12 @@ class OverlayPopup(
         )
     }
 
-    private fun createLayoutParams( loc: Point ): FrameLayout.LayoutParams {
+    private fun computeAtLocationGravity( gravityParam: Int): Int =
+        if ( gravityParam == Gravity.NO_GRAVITY) Gravity.TOP or Gravity.START else gravityParam
+
+    private fun createLayoutParams( gravity: Int ): FrameLayout.LayoutParams {
         return FrameLayout.LayoutParams(height, width).apply {
-            leftMargin = loc.x
-            topMargin = loc.y
-            gravity = Gravity.TOP or Gravity.START
+            this.gravity = gravity
         }
     }
 
