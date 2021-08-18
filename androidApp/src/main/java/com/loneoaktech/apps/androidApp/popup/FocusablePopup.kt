@@ -43,20 +43,24 @@ class FocusablePopup(
 
 ) {
 
-    /**
-     * S
-     */
-    var dismissOnOutsideTouch: Boolean = true
-
     private val activityRef = WeakReference(
         (popupView.context as? ComponentActivity) ?:
-            throw IllegalArgumentException("View context must be from an activity")
+        throw IllegalArgumentException("View context must be from an activity")
     )
 
     private val activity: ComponentActivity
         get() = activityRef.get() ?: throw IllegalStateException("Popup is detached from activity")
 
     private var onDismissHandler: OverlayPopupHandler? = null
+
+    private var overlayView: View? = null
+
+
+    /**
+     * Set to true (default) to cause the popup to be dismissed on outside clicks.
+     * If false, outside clicks are ignoered.
+     */
+    var dismissOnOutsideTouch: Boolean = true
 
     /**
      * Displays the popup relative to the parent window.
@@ -94,20 +98,44 @@ class FocusablePopup(
         }
     }
 
+    /**
+     * Shows popup relative to another view.
+     */
+    fun showRelative(
+        /**
+         * View to compute position from. Uses current position, does not track.
+         */
+        benchmarkView: View,
 
-    fun showRelative( home: View, anchorGravity: Int, popupGravity: Int, offset: Size ) {
+        /**
+         * Specifies what location on the benchmark view to use as the basis point.
+         * (Gravity.LEFT or Gravity.TOP uses the top left.)
+         * Gravity.CENTER uses the center
+         */
+        benchmarkGravity: Int,
+
+        /**
+         * The location on the popup view to line up with the reference (plus\ offset)
+         */
+        popupGravity: Int,
+
+        /**
+         * Offset from the specified point
+         */
+        offset: Size
+    ) {
         // TODO
     }
 
+    /**
+     * Removes the popup view and calls the onDismissHandler if one was suipplied
+     */
     fun dismiss() {
         if ( removeOverlay() ) {
             onDismissHandler?.invoke(this, null)
             onDismissHandler = null
         }
     }
-
-
-    private var overlayView: View? = null
 
     private val lifecycleObserver = LifecycleEventObserver { _, event ->
         if ( event == Lifecycle.Event.ON_DESTROY) {
