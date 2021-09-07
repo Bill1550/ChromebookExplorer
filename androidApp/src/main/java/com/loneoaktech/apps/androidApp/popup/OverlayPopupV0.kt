@@ -29,6 +29,9 @@ class OverlayPopupV0(
         }
     }
 
+    /**
+     * Show the popup.
+     */
     fun show() {
         Timber.i("show, layoutId=$layoutId")
         removeOverlay() // make sure not currently showing
