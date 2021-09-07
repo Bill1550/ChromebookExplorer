@@ -12,6 +12,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import timber.log.Timber
 
+/**
+ * A popup that will not cause the app to leave full screen mode when focus is
+ * migrated into the popup.
+ *
+ * More info here.
+ */
 class OverlayPopupV0(
     private val activity: ComponentActivity,
     @LayoutRes private val layoutId: Int,
